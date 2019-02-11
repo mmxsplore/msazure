@@ -1,0 +1,40 @@
+jobs:
+- job: First Job Here
+  pool:
+    Name: Default
+  steps:
+  - script: echo Hello From Foo!
+    condition: always() # this step will always run, even if cancelled
+  - task: GitHubStatus@0
+    displayName: Notify GitHub SmokeTests phase started 
+    inputs:
+      token: $(GitHubToken)
+      status: pending
+      statusDescription: SmokeTests started
+      context: 'CI-SmokeTests'
+  - task: PowerShell@2
+    displayName: 'Sleep a few seconds'   
+    inputs:
+      targetType: "inline"
+      script: 'Start-Sleep -Seconds 10'
+  - task: GitHubStatus@0
+    displayName: Notify GitHub SmokeTests phase finished
+    inputs:
+      token: $(GitHubToken)
+      context: 'CI-SmokeTests'      
+
+# - job: Second Job and here
+#   pool:
+#     Name: Default
+#   dependsOn: Foo      # first wait for job Foo to complete
+#   condition: always() # this job will always run
+#   steps:
+#   - script: echo Hello From Bar!
+
+# - job: Job No. 3
+#   pool:
+#     Name: Default
+#   dependsOn: Bar      # first wait for job Foo to complete
+#   condition: always() # this job will always run
+#   steps:
+#   - script: echo Hello From Bar!
