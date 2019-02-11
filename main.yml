@@ -14,7 +14,7 @@ jobs:
   steps:
   - script: echo Hello From Bar!
 
-- job: Job 3
+- job: Job No. 3
   pool:
     Name: Default
   dependsOn: Bar      # first wait for job Foo to complete
