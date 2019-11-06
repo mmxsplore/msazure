@@ -1,0 +1,16 @@
+jobs:
+  - job: Build
+    displayName: "Build and Push Docker Image to Container Registry"
+    timeoutInMinutes: 20
+    pool:
+      name: Hosted Ubuntu 1604
+
+    steps:
+    - powershell: |        
+        if("$(Build.SourceBranch)" -eq "refs/heads/master") {
+            Write-Host "##vso[build.updatebuildnumber]$((Get-Date).ToString('yy.%M.%d'))-master.$(BuildRevision)"
+        } elseif("$(Build.SourceBranch)" -eq "refs/heads/develop") {
+            Write-Host "##vso[build.updatebuildnumber]$((Get-Date).ToString('yy.%M.%d'))-develop.$(BuildRevision)"
+        } else {
+            Write-Host "##vso[build.updatebuildnumber]$((Get-Date).ToString('yy.%M.%d'))-feature.$(BuildRevision)"
+        }      
