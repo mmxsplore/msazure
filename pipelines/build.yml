@@ -1,6 +1,8 @@
 
 variables:
   BuildRevision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
+  a: 1
+  b: 2
 jobs:
   - job: Build
     displayName: "Build and Push Docker Image to Container Registry"
@@ -16,4 +18,6 @@ jobs:
             Write-Host "##vso[build.updatebuildnumber]$((Get-Date).ToString('yy.%M.%d'))-develop.$(BuildRevision)"
         } else {
             Write-Host "##vso[build.updatebuildnumber]$((Get-Date).ToString('yy.%M.%d'))-feature.$(BuildRevision)"
-        }      
+        }
+    - powershell: |        
+        Write-Host $($(a) + $(b))
