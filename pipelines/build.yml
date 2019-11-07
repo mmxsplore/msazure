@@ -1,3 +1,5 @@
+# no PR builds
+pr: none
 
 variables:
   BuildRevision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
@@ -39,4 +41,4 @@ jobs:
           docker build --tag $(ContainerRegistry_Name)/$(ContainerRegistry_RepoName):$(dockerTag) .
           docker push $(ContainerRegistry_Name)/$(ContainerRegistry_RepoName):$(dockerTag)
           docker logout $(ContainerRegistry_Name)
-      workingDirectory: $(Build.SourcesDirectory)/Experiments/WebApplication1
+        workingDirectory: $(Build.SourcesDirectory)/Experiments/WebApplication1
