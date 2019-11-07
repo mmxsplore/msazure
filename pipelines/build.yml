@@ -7,7 +7,6 @@ jobs:
     timeoutInMinutes: 20
     pool:
       name: Hosted Ubuntu 1604
-
     steps:
     - task: PowerShell@2
       displayName: Set build number
@@ -23,8 +22,21 @@ jobs:
           }
 
     - task: PowerShell@2
-      displayName: Docker login, build and push
+      displayName: Establish docker image tag
       inputs:
         targetType: inline
         script: |
-          docker login $(ContainerRegistry_Name) --username $(ContainerRegistry_User) --password $(ContainerRegistry_Password)    
+          if([string]::IsNullOrEmpty("$(dockerTag)")) {
+              Write-Host "##vso[task.setvariable variable=dockerTag;]$(Build.BuildNumber)"
+          }
+
+    - task: PowerShell@2
+      displayName: Docker login, build, push and logout
+      inputs:
+        targetType: inline
+        script: |
+          docker login $(ContainerRegistry_Name) --username $(ContainerRegistry_User) --password $(ContainerRegistry_Password)
+          docker build --tag $(ContainerRegistry_Name)/$(ContainerRegistry_RepoName):$(dockerTag) .
+          docker push $(ContainerRegistry_Name)/$(ContainerRegistry_RepoName):$(dockerTag)
+          docker logout $(ContainerRegistry_Name)
+      workingDirectory: $(Build.SourcesDirectory)/Experiments/WebApplication1
