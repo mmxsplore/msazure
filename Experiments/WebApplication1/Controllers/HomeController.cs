@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
             }
 
             ViewBag.computername = computername;
-            ViewBag.blue_or_green = "GREEN";
+            ViewBag.blue_or_green = "BLUE";
             ViewBag.utc_time = DateTime.UtcNow;
 
             return View();          
