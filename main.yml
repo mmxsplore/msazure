@@ -1,3 +1,13 @@
+trigger:
+  branches:
+    include:
+    - master
+pr:
+  autoCancel: false
+  branches:
+    include:
+      - master
+
 jobs:
 - job: main
   pool:
