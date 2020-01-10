@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+    - master
+pr:
+  autoCancel: false
+  branches:
+    include:
+      - master
+
+jobs:
+- job: main
+  pool:
+    name: Hosted Ubuntu 1604
+  steps:
+  - powershell: |
+      Write-Host "In Main"
+    condition: always() # this step will always run, even if cancelled
