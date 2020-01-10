@@ -1,23 +1,8 @@
 jobs:
-- job: First Job Here
+- job: main
   pool:
-    Name: Default
+    name: Hosted Ubuntu 1604
   steps:
-  - script: echo Hello From Foo!
+  - powershell: |
+      Write-Host "In Main"
     condition: always() # this step will always run, even if cancelled
-
-- job: Second Job and here
-  pool:
-    Name: Default
-  dependsOn: Foo      # first wait for job Foo to complete
-  condition: always() # this job will always run
-  steps:
-  - script: echo Hello From Bar!
-
-- job: Job No. 3
-  pool:
-    Name: Default
-  dependsOn: Bar      # first wait for job Foo to complete
-  condition: always() # this job will always run
-  steps:
-  - script: echo Hello From Bar!
